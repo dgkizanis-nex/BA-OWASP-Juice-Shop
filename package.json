@@ -154,7 +154,7 @@
     "js-yaml": "^3.14.0",
     "jsonwebtoken": "9.0.0",
     "jssha": "^3.1.1",
-    "juicy-chat-bot": "~3.9.18",
+    "juicy-chat-bot": "~9.0.0",
     "median": "^0.0.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
