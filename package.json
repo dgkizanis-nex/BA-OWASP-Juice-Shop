@@ -113,6 +113,7 @@
     ]
   },
   "dependencies": {
+    "ansi-regex": "^6.0.1",
     "body-parser": "^1.20.2",
     "check-dependencies": "^2.0.0",
     "check-internet-connected": "^2.0.6",
@@ -154,7 +155,7 @@
     "js-yaml": "^3.14.0",
     "jsonwebtoken": "9.0.0",
     "jssha": "^3.1.1",
-    "juicy-chat-bot": "~0.8.0",
+    "vm2": "~3.9.18",
     "libxmljs": "^1.0.11",
     "marsdb": "^0.6.11",
     "median": "^0.0.2",
