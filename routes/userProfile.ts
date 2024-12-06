@@ -62,7 +62,7 @@ module.exports = function getUserProfile () {
             'Content-Security-Policy': CSP
           })
 
-          res.send(fn(user))
+          res.send(fn('url(<%=ESAPI.encoder().encodeForJS(ESAPI.encoder().encodeForURL(user))%>)'))
         }).catch((error: Error) => {
           next(error)
         })
