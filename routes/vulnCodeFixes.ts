@@ -44,6 +44,9 @@ export const readFixes = (key: string) => {
 export const sanitizeLegacy = (input = '') => input.replace(/<(?:\w+)\W+?[\w]/gi, '')
 export const sanitizeFilename = (filename: string) => sanitizeFilenameLib(filename)
 export const sanitizeSecure = (html: string): string => {
+  
+  html = html.replace(/%2e/ig, '.')
+  html = html.replace(/%2f|%5c/ig, '/')
   const sanitized = sanitizeHtml(html)
   if (sanitized === html) {
     return html
@@ -93,6 +96,8 @@ export const checkCorrectFix = () => async (req: Request<Record<string, unknown>
     })
   } else {
     let explanation
+    key = key.replace(/%2e/ig, '.')
+    key = key.replace(/%2f|%5c/ig, '/')
     if (fs.existsSync('./data/static/codefixes/' + key + '.info.yml')) {
       const codingChallengeInfos = yaml.load(fs.readFileSync('./data/static/codefixes/' + key + '.info.yml', 'utf8'))
       const selectedFixInfo = codingChallengeInfos?.fixes.find(({ id }: { id: number }) => id === selectedFix + 1)
