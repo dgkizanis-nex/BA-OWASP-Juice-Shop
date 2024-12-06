@@ -1,5 +1,8 @@
 import { type NextFunction, type Request, type Response } from 'express'
 import * as accuracy from '../lib/accuracy'
+//import sanitizeHtml from '../routes/insecurity'
+import sanitizeHtmlLib from 'sanitize-html'
+import sanitizeFilenameLib from 'sanitize-filename'
 
 const challengeUtils = require('../lib/challengeUtils')
 const fs = require('fs')
@@ -15,6 +18,7 @@ interface codeFix {
 type cache = Record<string, codeFix>
 
 const CodeFixes: cache = {}
+
 
 export const readFixes = (key: string) => {
   if (CodeFixes[key]) {
@@ -35,6 +39,19 @@ export const readFixes = (key: string) => {
       }
     }
   }
+
+  export const sanitizeHtml = (html: string) => sanitizeHtmlLib(html)
+export const sanitizeLegacy = (input = '') => input.replace(/<(?:\w+)\W+?[\w]/gi, '')
+export const sanitizeFilename = (filename: string) => sanitizeFilenameLib(filename)
+export const sanitizeSecure = (html: string): string => {
+  const sanitized = sanitizeHtml(html)
+  if (sanitized === html) {
+    return html
+  } else {
+    return sanitizeSecure(sanitized)
+  }
+}
+
 
   CodeFixes[key] = {
     fixes,
@@ -82,7 +99,7 @@ export const checkCorrectFix = () => async (req: Request<Record<string, unknown>
       if (selectedFixInfo?.explanation) explanation = res.__(selectedFixInfo.explanation)
     }
     if (selectedFix === fixData.correct) {
-      await challengeUtils.solveFixIt(key)
+      await challengeUtils.solveFixIt(sanitizeHtml(key))
       res.status(200).json({
         verdict: true,
         explanation
